@@ -251,19 +251,25 @@ int plotpoints(VectorPtr v, int l, WorldPtr w){
 		e, p, pe,
 		pi, pj,
 		a, b, n, p0,
-		*l0, lv, bf, pt,
+		*l0, lv, bfr, pt,
 		u
 	;
 
 	vcpy((*w).e, &e);
 	vcpy((*w).p, &p);
-	vfill(1, 0, 0, &u);
+/* u is invalid for certain values of p and e...
+	...Fix This! */
+	if(e.k < 0)
+		vfill(-1, 0, 0, &u);
+	else
+		vfill(1, 0, 0, &u);
+
 
 	vsub(&e, &p, &pe);
 
 	vcrossp(&u, &pe, &pj);
 	vcrossp(&pj, &pe, &pi);
-	vcrossp(&pi, &pj, &n);
+	vcrossp(&pj, &pi, &n);
 
 	vnorm(&pj, &pj);
 	vnorm(&pi, &pi);
@@ -279,33 +285,35 @@ int plotpoints(VectorPtr v, int l, WorldPtr w){
 	vsmult(&pj, plh, &b);
 
 	VectorPtr *pxmx = (VectorPtr *) malloc(
-		sizeof(VectorPtr) * pxw
+		sizeof(VectorPtr) * pxh
 	);
 
 	int i;
-	for(i = 0; i < pxw; i ++)
+	for(i = 0; i < pxh; i ++)
 		pxmx[i] = (VectorPtr) malloc(
-			sizeof(Vector) * pxh
+			sizeof(Vector) * pxw
 		);
 
 	int j;
-	for(i = 0; i < pxw; i ++)
-		for(j = 0; j < pxh; j ++){
+	for(i = 0; i < pxh; i ++)
+		for(j = 0; j < pxw; j ++){
 			vfill(0, 0, 0, &pxmx[i][j]);
 		}
 
 	for(i = 4; i < l; i ++){
-		l0 = v + i;
+		l0 = &e;
 
-		vsub(l0, &e, &lv);
+		vsub(v + i, l0, &lv);
 		vnorm(&lv, &lv);
 
-		vsub(&p0, l0, &bf);
-		num = vdotp(&bf, &n);
+		vsub(&p0, l0, &bfr);
+		num = vdotp(&bfr, &n);
 		den = vdotp(&lv, &n);
 
 		vsmult(&lv, num / den, &pt);
+		vsum(&pt, l0, &pt);
 		vsub(&pt, &p0, &pt);
+
 		sproja = vdotp(&pt, &a) / vmag(&a);
 		sprojb = vdotp(&pt, &b) / vmag(&b);
 
@@ -318,8 +326,8 @@ int plotpoints(VectorPtr v, int l, WorldPtr w){
 			pxi = (sproja / vmag(&a)) * pxw;
 			pxj = (sprojb / vmag(&b)) * pxh;
 			vfill(
-				255,255,255,
-				&pxmx[(int) pxi][(int) pxj]
+				255, 255, 255,
+				&pxmx[(int) pxj][(int) pxi]
 			);
 		}
 	}

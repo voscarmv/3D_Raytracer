@@ -1,0 +1,21 @@
+break 286
+run < pts2
+echo pe =
+p pe
+echo p =
+p p
+echo u =
+p u
+echo pi =
+p pi
+echo pj =
+p pj
+echo a =
+p a
+echo b =
+p b
+echo n =
+p n
+echo p0 =
+p p0
+quit

@@ -10,7 +10,7 @@ X=`{ echo "scale=2" ; echo \
 "${RADIUS}*c(${ANGLE})+${CENTERX}" ; } | bc -l`
 Y=`{ echo "scale=2" ; echo \
 "${RADIUS}*s(${ANGLE})+${CENTERY}" ; } | bc -l`
-echo -n "0 ${X} ${Y}"
+echo -n "${X} 0 ${Y}"
 }
 
 CTR=0
@@ -21,18 +21,18 @@ do
 
 FNAME=`printf 'p%03d.ppm' $CTR`
 
-XY=`circumference 5 0 0 ${COUNT}`
-XY2=`circumference 4 0 0 ${COUNT}`
+XY=`circumference 15 0 0 ${COUNT}`
+XY2=`circumference 14 0 0 ${COUNT}`
 
 ./dralion4 > $FNAME << EOF
 ${XY}
 ${XY2}
 500 500 0
-50 50 0
+15 15 0
 `cat points`
 EOF
 
-echo $FNAME done
+echo $FNAME done, eye $XY, plane $XY2
 
 # echo "move to ${XY}"
 # echo "${XY}"
