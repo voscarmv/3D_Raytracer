@@ -1,0 +1,7 @@
+Just run
+	$ ./n.sh
+Dependencies:
+	ffmpeg
+	mplayer
+	gcc
+	build-essential
