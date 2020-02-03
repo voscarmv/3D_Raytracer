@@ -12,7 +12,7 @@ apt-get install ffmpeg mplayer gcc build-essential
 
 ## Usage
 
-You can specify the poins on the [points](https://github.com/voscarmv/3D_Raytracer/blob/master/points) file.
+You can specify the plot points on the [points](https://github.com/voscarmv/3D_Raytracer/blob/master/points) file.
 
 Then just run [n.sh](https://github.com/voscarmv/3D_Raytracer/blob/master/n.sh) to generate a video with a 360 degree rotation of the resulting 3D plot.
 
